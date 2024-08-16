@@ -24,12 +24,13 @@ def punto2 () -> None:
     # 2.
 
     # 2.1. Graficar los histogramas de los diferentes atributos y el target
-    df_california.hist (bins=50, color='black')
+    df_california.hist(bins=150)
     plt.suptitle ("Histograma de los atributos y el target")
     plt.show ()
 
     # 2.2. ¿Qué tipo de forma de histograma se observa?
-    print ("\n- Se observa una forma de histograma asimétrica positiva en el target.")
+    print ("\n- Se observa una forma de histograma asimétrica positiva en el target. \
+             Se puede considerar que los datos provienen mas o menos de una distribución gaussiana")
 
 
 
