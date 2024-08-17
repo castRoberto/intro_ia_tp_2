@@ -4,6 +4,7 @@
 - Roberto Enrique Castro Beltran
 - Gonzalo Gabriel Fernández
 
+## Descripción
 Se requiere construir una regresión que nos permita predecir el valor medio de las casas en distritos de California, 
 EEUU (medidos en cientos de miles de dólares $100,000). Este dataset se deriva del censo de 1990 de EEUU, donde cada 
 observación es un bloque. Un bloque es la unidad geográfica más pequeña para la cual la Oficina del Censo de EEUU 
