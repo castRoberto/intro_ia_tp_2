@@ -1,7 +1,7 @@
 import sys
 import os
 
-import data_manager
+import common
 
 import numpy as np
 
@@ -17,14 +17,14 @@ def punto3 () -> None:
     
     """
 
-    X_train_scaled, _ = data_manager.get_X_train_test_scaled ()
-    y_train, _ = data_manager.get_y_train_test ()
+    X_train_scaled, _ = common.get_X_train_test_scaled ()
+    y_train, _ = common.get_y_train_test ()
 
     print ("\n\n-> Punto 3: \n")
 
     # 3.
     # 3.1. Calcular la regresión lineal usando todos los atributos
-    regresion = data_manager.get_model (X_train_scaled, y_train)
+    regresion = common.get_linear_model (X_train_scaled, y_train)
 
     # 3.2. Con el set de entrenamiento, calcular la varianza total del modelo y la que es explicada con el modelo
     y_pred = regresion.predict (X_train_scaled)

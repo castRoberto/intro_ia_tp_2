@@ -1,7 +1,7 @@
 import sys
 import os
 
-import data_manager
+import common
 
 import matplotlib.pyplot as plt
 
@@ -17,7 +17,7 @@ def punto2 () -> None:
 
     """
 
-    df_california = data_manager.get_data_frame ()
+    df_california = common.get_data_frame ()
 
     print ("\n\n-> Punto 2: \n")
 

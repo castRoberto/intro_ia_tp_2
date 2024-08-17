@@ -1,8 +1,11 @@
 
 import pandas as pd
+import numpy as np
 
 from sklearn.datasets import fetch_california_housing
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import cross_val_score
+from sklearn.linear_model import Ridge
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import pickle
@@ -19,7 +22,19 @@ __X_train, __X_test, __y_train, __y_test = None, None, None, None
 __X_train_scaled, __X_test_scaled = None, None
 
 
-__model = None
+# Modelos
+__linear_model = None
+__best_ridge_model = None
+
+# Ridge data
+ALPHA_NUM = 1000
+MAX_ALPHA = 12.5
+
+# Array de alphas
+__alpha_array = None #np.linspace (0, MAX_ALPHA, ALPHA_NUM)
+
+# MSE para cada alpha
+__mse_array = None
 
 
 def __load_data () -> None:
@@ -83,23 +98,72 @@ def get_data_frame () -> pd.DataFrame:
     return __df_california
 
 
-def get_model (X_test, y_test) -> object:
+def get_linear_model (X_train, y_train) -> object:
 
-    global __model
+    global __linear_model
 
-    if __model is None:
+    if __linear_model is None:
 
         try:
             
             with open ('modelo_regresion_lineal.pkl', 'rb') as file:
-                __model = pickle.load (file)
+                __linear_model = pickle.load (file)
 
         except FileNotFoundError:
 
-            __model = LinearRegression ()
-            __model.fit (X_test, y_test)
+            __linear_model = LinearRegression ()
+            __linear_model.fit (X_train, y_train)
 
             with open ('modelo_regresion_lineal.pkl', 'wb') as file:
-                pickle.dump(__model, file)
+                pickle.dump(__linear_model, file)
 
-    return __model
+    return __linear_model
+
+
+
+def explore_alphas_with_cross_val (X_train, y_train) -> None:
+
+    global __alpha_array, __mse_array
+
+    if __alpha_array is None or __mse_array is None:
+
+        __alpha_array = np.linspace (0, MAX_ALPHA, ALPHA_NUM)
+        __mse_array = []
+
+        # Calculamos los coeficientes para diferentes valores de alpha
+        for index, alpha in enumerate(__alpha_array):
+
+            # Creamos el modelo de Ridge
+            ridge_model = Ridge (alpha=alpha)
+
+            # Usar cross_val_score para calcular el MSE
+            mse = -cross_val_score (ridge_model, X_train, y_train, cv=5, scoring='neg_mean_squared_error').mean()
+            __mse_array.append(mse)
+
+        # Convertir mse_array a numpy array
+        __mse_array = np.array(__mse_array)
+
+    return [__alpha_array, __mse_array]
+
+
+
+def get_best_alpha (alpha_array, mse_array) -> list:
+
+    # Encontrar el mejor valor de alpha
+    best_alpha = alpha_array[np.argmin(mse_array)]
+    best_mse = np.min(mse_array)
+
+    return [best_alpha, best_mse]
+
+
+
+def get_best_ridge_model (best_alpha, X_train, y_train) -> object:
+
+    global __best_ridge_model
+
+    if __best_ridge_model is None:
+
+        __best_ridge_model = Ridge (alpha=best_alpha)
+        __best_ridge_model.fit (X_train, y_train)
+
+    return __best_ridge_model

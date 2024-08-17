@@ -1,7 +1,7 @@
 import sys
 import os
 
-import data_manager
+import common
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -17,8 +17,8 @@ def punto1 () -> None:
     
     """
 
-    X_train_scaled, _ = data_manager.get_X_train_test_scaled ()
-    df_california = data_manager.get_data_frame ()
+    X_train_scaled, _ = common.get_X_train_test_scaled ()
+    df_california = common.get_data_frame ()
     correlation_matrix = None
 
     sns.pairplot(data=df_california, diag_kind="kde");

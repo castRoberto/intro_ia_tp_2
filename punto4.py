@@ -1,7 +1,7 @@
 import sys
 import os
 
-import data_manager
+import common
 
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 
@@ -14,12 +14,12 @@ def punto4 () -> None:
     
     """
 
-    X_train_scaled, X_test_scaled = data_manager.get_X_train_test_scaled ()
-    y_train, y_test = data_manager.get_y_train_test ()
+    X_train_scaled, X_test_scaled = common.get_X_train_test_scaled ()
+    y_train, y_test = common.get_y_train_test ()
 
     print ("\n\n-> Punto 4: \n")
 
-    regresion = data_manager.get_model (X_train_scaled, y_train)
+    regresion = common.get_linear_model (X_train_scaled, y_train)
     y_pred = regresion.predict (X_test_scaled)
 
     # 4.
